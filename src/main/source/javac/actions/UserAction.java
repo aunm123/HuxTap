@@ -104,4 +104,28 @@ public class UserAction extends ActionSupport {
     public void setSelectedRow(String[] selectedRow) {
         this.selectedRow = selectedRow;
     }
+
+    public File getHeadImg() {
+        return headImg;
+    }
+
+    public void setHeadImg(File headImg) {
+        this.headImg = headImg;
+    }
+
+    public String getHeadImgContentType() {
+        return headImgContentType;
+    }
+
+    public void setHeadImgContentType(String headImgContentType) {
+        this.headImgContentType = headImgContentType;
+    }
+
+    public String getHeadImgFileName() {
+        return headImgFileName;
+    }
+
+    public void setHeadImgFileName(String headImgFileName) {
+        this.headImgFileName = headImgFileName;
+    }
 }
