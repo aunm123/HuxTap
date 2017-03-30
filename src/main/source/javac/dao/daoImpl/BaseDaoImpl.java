@@ -26,7 +26,7 @@ public class BaseDaoImpl<T> extends HibernateDaoSupport implements BaseDao<T> {
     }
 
     public void delete(Serializable id) {
-        getHibernateTemplate().delete(id);
+        getHibernateTemplate().delete(findObjectById(id));
     }
 
     public void update(Object entity) {

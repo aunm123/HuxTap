@@ -6,10 +6,29 @@
     <script type="text/javascript">
         //全选、全反选
         function doSelectAll(){
-            // jquery 1.6 前
-            //$("input[name=selectedRow]").attr("checked", $("#selAll").is(":checked"));
             //prop jquery 1.6+建议使用
             $("input[name=selectedRow]").prop("checked", $("#selAll").is(":checked"));
+        }
+        function doDeleteAll(){
+            document.forms[0].action="${basePath}user_deleteSelect.do";
+            document.forms[0].submit();
+        }
+        function doAdd() {
+            document.forms[0].action="${basePath}user_addUI.do";
+            document.forms[0].submit();
+        }
+        function doDelete(id) {
+            if(window.confirm("确认要删除此信息？")){
+                document.forms[0].action="${basePath}user_delete.do?user.id="+id;
+                document.forms[0].submit();
+                return true;
+            }else {
+                return false;
+            }
+        }
+        function  doEdit(id) {
+            document.forms[0].action="${basePath}user_editUI.do?user.id="+id;
+            document.forms[0].submit();
         }
     </script>
 </head>
@@ -48,18 +67,20 @@
                             <td width="100" align="center">操作</td>
                         </tr>
 
-                        <tr bgcolor="f8f8f8">
-                            <td align="center"><input type="checkbox" name="selectedRow" value=""/></td>
-                            <td align="center">xxx</td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center"></td>
-                            <td align="center">
-                                <a href="javascript:doEdit(id)">编辑</a>
-                                <a href="javascript:doDelete(id)">删除</a>
-                            </td>
-                        </tr>
+                        <s:iterator value="userList" status="st">
+                            <tr <s:if test="#st.odd">bgcolor="f8f8f8"</s:if>> >
+                                <td align="center"><input type="checkbox" name="selectedRow" value="<s:property value="id" />" /></td>
+                                <td align="center"><s:property value="name" /></td>
+                                <td align="center"><s:property value="account" /></td>
+                                <td align="center"><s:property value="dept" /></td>
+                                <td align="center"><s:property value="gender?'男':'女'" /></td>
+                                <td align="center"><s:property value="email" /></td>
+                                <td align="center">
+                                    <a href="javascript:doEdit('<s:property value='id'/>')">编辑</a>
+                                    <a href="#" onclick="return doDelete('<s:property value='id'/>')">删除</a>
+                                </td>
+                            </tr>
+                        </s:iterator>
 
                     </table>
                 </div>

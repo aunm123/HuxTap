@@ -10,13 +10,22 @@
     <!-- 配置成开发模式 -->
     <constant name="struts.devMode" value="true" />
     <!-- 配置拓展名为action -->
-    <constant name="struts.action.extention" value="action" />
+    <constant name="struts.action.extension" value="do" />
     <!-- 把主题配置成simple -->
     <constant name="struts.ui.theme" value="simple" />
 
+
     <package name="user-action" namespace="/" extends="struts-default">
+        <global-allowed-methods>regex:.*</global-allowed-methods>
         <action name="user_*" class="userAction" method="{1}">
-            <result name="success">/WEB-INF/jsp/tax/user/{1}.jsp</result>
+            <result name="list">/WEB-INF/jsp/tax/user/listUI.jsp</result>
+            <!--<result name="addUI">/WEB-INF/jsp/tax/user/addUI.jsp</result>-->
+            <result name="{1}">/WEB-INF/jsp/tax/user/{1}.jsp</result>
+            <!--struts2通配符安全配置-->
+            <!--<allowed-methods>listUI,editUI,addUI,add,edit,delete,deleteSelect</allowed-methods>-->
+        </action>
+        <action name="test_*" class="testAction" method="execute">
+            <result name="success">/WEB-INF/jsp/test/test.jsp</result>
         </action>
     </package>
 

@@ -28,7 +28,7 @@ public class TestMarge {
 
     @Test
     public void testAction() throws Exception {
-        UserAction action = (UserAction) ctx.getBean("testAction");
+        UserAction action = (UserAction) ctx.getBean("userAction");
         action.execute();
     }
 
@@ -45,19 +45,25 @@ public class TestMarge {
 
     @Test
     public void testServiceAndDao(){
-        UserService service=(UserService)ctx.getBean("testService");
+        UserService service=(UserService)ctx.getBean("userService");
 //        service.save(new Person("Tom"));
     }
 
     @Test
+    public void testServiceDelete(){
+        UserService service=(UserService)ctx.getBean("userService");
+        service.delete(2);
+    }
+
+    @Test
     public void testTranslationReadOnly(){
-        UserService service=(UserService)ctx.getBean("testService");
+        UserService service=(UserService)ctx.getBean("userService");
 //        service.findPersion(8);
     }
 
     @Test
     public void testTranslationRollback(){
-        UserService service=(UserService)ctx.getBean("testService");
+        UserService service=(UserService)ctx.getBean("userService");
 //        service.save(new Person("Tom2"));
     }
 }

@@ -17,11 +17,12 @@ public class UserAction extends ActionSupport {
     private UserService userService;
     private List<User> userList;
     private User user;
+    private String[] selectedRow;
 
     //列表页面
     public String listUI(){
         userList=userService.findObjects();
-        return "listUI";
+        return "list";
     }
 
     //跳转到新增页面
@@ -58,12 +59,12 @@ public class UserAction extends ActionSupport {
     }
     //批量删除
     public String deleteSelect(){
+        if (selectedRow!=null){
+            for (String id : this.selectedRow){
+                userService.delete(Integer.parseInt(id));
+            }
+        }
         return listUI();
-    }
-
-    @Override
-    public String execute() throws Exception {
-        return SUCCESS;
     }
 
     public List<User> getUserList() {
@@ -80,5 +81,13 @@ public class UserAction extends ActionSupport {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    public String[] getSelectedRow() {
+        return selectedRow;
+    }
+
+    public void setSelectedRow(String[] selectedRow) {
+        this.selectedRow = selectedRow;
     }
 }
