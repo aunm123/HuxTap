@@ -1,13 +1,18 @@
 package javac.actions;
 
+import org.apache.commons.io.FileUtils;
 import com.opensymphony.xwork2.ActionSupport;
 import javac.entity.User;
 import javac.service.UserService;
+import org.apache.struts2.ServletActionContext;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 
 @Controller("userAction")
 @Scope("prototype")
@@ -18,6 +23,9 @@ public class UserAction extends ActionSupport {
     private List<User> userList;
     private User user;
     private String[] selectedRow;
+    private File headImg;
+    private String headImgContentType;
+    private String headImgFileName;
 
     //列表页面
     public String listUI(){
@@ -30,8 +38,14 @@ public class UserAction extends ActionSupport {
         return "addUI";
     }
     //保存新增
-    public String add(){
+    public String add() throws IOException {
         if (user!=null){
+            if (headImg!=null){
+                String filePath = ServletActionContext.getServletContext().getRealPath("upload/user");
+                String fileName = UUID.randomUUID().toString()+headImgFileName.substring(headImgFileName.lastIndexOf('.'));
+                FileUtils.copyFile(headImg,new File(filePath,fileName));
+                user.setHeadImg("user/"+fileName);
+            }
             userService.save(user);
         }
         return listUI();
