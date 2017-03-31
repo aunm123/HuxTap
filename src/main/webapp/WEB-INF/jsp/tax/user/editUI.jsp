@@ -21,7 +21,10 @@
                         <td class="tdBg" width="200px">头像：</td>
                         <td>
 
-                            <img src="" width="100" height="100"/>
+                            <s:if test="%{user.headImg != null && user.headImg != ''}">
+                                <img src="${basePath}upload/<s:property value="user.headImg" />" width="100" height="100" />
+                                <s:hidden name="user.headImg" />
+                            </s:if>
 
                             <input type="file" name="headImg"/>
                         </td>
@@ -32,7 +35,7 @@
                     </tr>
                     <tr>
                         <td class="tdBg" width="200px">帐号：</td>
-                        <td><s:textfield name="user.account"/></td>
+                        <td><s:textfield name="user.account" id="account" onchange="doverify()" /></td>
                     </tr>
                     <tr>
                         <td class="tdBg" width="200px">密码：</td>
@@ -69,7 +72,7 @@
                 </table>
                 <s:hidden name="user.id"/>
                 <div class="tc mt20">
-                    <input type="submit" class="btnB2" value="保存" />
+                    <input type="submit" class="btnB2" value="保存" onclick="return onAddSumbit()"/>
 
                     <input type="button"  onclick="javascript:history.go(-1)" class="btnB2" value="返回" />
                 </div>

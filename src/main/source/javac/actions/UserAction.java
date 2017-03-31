@@ -1,14 +1,19 @@
 package javac.actions;
 
-import org.apache.commons.io.FileUtils;
-import com.opensymphony.xwork2.ActionSupport;
 import javac.entity.User;
+import javac.exception.ActionException;
+import javac.exception.SysException;
 import javac.service.UserService;
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.struts2.ServletActionContext;
+import org.hibernate.service.spi.ServiceException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -16,20 +21,23 @@ import java.util.UUID;
 
 @Controller("userAction")
 @Scope("prototype")
-public class UserAction extends ActionSupport {
+public class UserAction extends BaseAction {
 
     @Resource
     private UserService userService;
     private List<User> userList;
     private User user;
-    private String[] selectedRow;
     private File headImg;
     private String headImgContentType;
     private String headImgFileName;
 
     //列表页面
-    public String listUI(){
-        userList=userService.findObjects();
+    public String listUI() throws SysException{
+        try {
+            userList=userService.findObjects();
+        }catch (ServiceException e){
+            throw new ActionException("action 出现异常"+e.getMessage());
+        }
         return "list";
     }
 
@@ -38,7 +46,7 @@ public class UserAction extends ActionSupport {
         return "addUI";
     }
     //保存新增
-    public String add() throws IOException {
+    public String add() throws IOException,SysException {
         if (user!=null){
             if (headImg!=null){
                 String filePath = ServletActionContext.getServletContext().getRealPath("upload/user");
@@ -58,27 +66,53 @@ public class UserAction extends ActionSupport {
         return "editUI";
     }
     //保存编辑
-    public String edit(){
+    public String edit() throws IOException,SysException {
         if (user!=null){
+            if (headImg!=null){
+                String filePath=ServletActionContext.getServletContext().getRealPath("upload/user");
+                String fileName = UUID.randomUUID().toString()+headImgFileName.substring((headImgFileName.lastIndexOf(".")));
+                FileUtils.copyFile(headImg,new File(filePath,fileName));
+                if (user.getHeadImg()!=null){
+                    String oldfilename = filePath+"\\"+user.getHeadImg().substring(5);
+                    File file = new File(oldfilename);
+                    file.delete();
+                }
+                user.setHeadImg("user/"+fileName);
+            }
             userService.update(user);
         }
         return listUI();
     }
     //删除
-    public String delete(){
+    public String delete() throws SysException{
         if (user!=null&&user.getId()!=null){
             userService.delete(user.getId());
         }
         return listUI();
     }
     //批量删除
-    public String deleteSelect(){
+    public String deleteSelect() throws SysException{
         if (selectedRow!=null){
             for (String id : this.selectedRow){
                 userService.delete(Integer.parseInt(id));
             }
         }
         return listUI();
+    }
+    //验证用户名唯一
+    public void verifyAccount() throws IOException {
+        String result = "true";
+        if (user!=null && StringUtils.isNotBlank(user.getAccount())){
+            User tempuser = userService.findObjectByAccound(user.getAccount());
+            if (tempuser!=null){
+                result = "flase";
+            }
+            HttpServletResponse response = ServletActionContext.getResponse();
+            response.setContentType("text/html");
+            ServletOutputStream outputStream = response.getOutputStream();
+            outputStream.write(result.getBytes());
+            outputStream.close();
+        }
     }
 
     public List<User> getUserList() {
@@ -95,14 +129,6 @@ public class UserAction extends ActionSupport {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public String[] getSelectedRow() {
-        return selectedRow;
-    }
-
-    public void setSelectedRow(String[] selectedRow) {
-        this.selectedRow = selectedRow;
     }
 
     public File getHeadImg() {

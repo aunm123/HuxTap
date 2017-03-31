@@ -13,5 +13,6 @@ public interface UserService {
     public void update(User user);
     public void delete(Serializable id);
     public User findObjectById(Serializable id);
+    public User findObjectByAccound(String account);
     public List<User> findObjects();
 }

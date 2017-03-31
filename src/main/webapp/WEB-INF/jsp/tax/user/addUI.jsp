@@ -29,7 +29,7 @@
                     </tr>
                     <tr>
                         <td class="tdBg" width="200px">帐号：</td>
-                        <td><s:textfield name="user.account" value="帐号"/></td>
+                        <td><s:textfield name="user.account" id="account" onchange="doverify()" value="帐号"/></td>
                     </tr>
                     <tr>
                         <td class="tdBg" width="200px">密码：</td>
@@ -65,7 +65,7 @@
                     </tr>
                 </table>
                 <div class="tc mt20">
-                    <input type="submit" class="btnB2" value="保存" />
+                    <input type="submit" class="btnB2" value="保存" onclick="return onAddSumbit()" />
 
                     <input type="button"  onclick="javascript:history.go(-1)" class="btnB2" value="返回" />
                 </div>
