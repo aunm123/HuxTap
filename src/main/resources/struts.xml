@@ -38,6 +38,11 @@
             <!--struts2通配符安全配置-->
             <!--<allowed-methods>listUI,editUI,addUI,add,edit,delete,deleteSelect</allowed-methods>-->
         </action>
+        <action name="role_*" class="roleAction" method="{1}">
+            <result name="list">/WEB-INF/jsp/tax/user/listUI.jsp</result>
+            <result name="{1}">/WEB-INF/jsp/tax/user/{1}.jsp</result>
+        </action>
+
         <action name="test_*" class="testAction" method="execute">
             <result name="success">/WEB-INF/jsp/test/test.jsp</result>
         </action>

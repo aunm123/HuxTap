@@ -3,7 +3,6 @@ package javac.service.impl;
 import javac.dao.UserDao;
 import javac.entity.User;
 import javac.service.UserService;
-import org.hibernate.service.spi.ServiceException;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -37,11 +36,11 @@ public class UserServiceImpl implements UserService {
 
     public List<User> findObjects() {
         List<User> lUser = userDao.findObjects();
-        try {
-            int i = 1/0;
-        }catch (Exception e) {
-            throw new ServiceException("service 出错！"+e.getMessage());
-        }
+//        try {
+//            int i = 1/0;
+//        }catch (Exception e) {
+//            throw new ServiceException("service 出错！"+e.getMessage());
+//        }
         return lUser;
     }
 
