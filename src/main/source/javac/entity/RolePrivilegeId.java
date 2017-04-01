@@ -1,21 +1,24 @@
 package javac.entity;
 
-import javax.persistence.Entity;
+import javax.persistence.Embeddable;
 import javax.persistence.ManyToOne;
-import javax.persistence.Table;
 import java.io.Serializable;
 
 /**
  * Created by timhuo on 2017/3/31.
  */
-@Entity
-@Table
+@Embeddable
 public class RolePrivilegeId implements Serializable {
     @ManyToOne
     private Role role;
     private String code;
 
     public RolePrivilegeId() {
+    }
+
+    public RolePrivilegeId(Role role, String code) {
+        this.role = role;
+        this.code = code;
     }
 
     public Role getRole() {

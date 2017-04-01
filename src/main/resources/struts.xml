@@ -39,8 +39,8 @@
             <!--<allowed-methods>listUI,editUI,addUI,add,edit,delete,deleteSelect</allowed-methods>-->
         </action>
         <action name="role_*" class="roleAction" method="{1}">
-            <result name="list">/WEB-INF/jsp/tax/user/listUI.jsp</result>
-            <result name="{1}">/WEB-INF/jsp/tax/user/{1}.jsp</result>
+            <result name="list">/WEB-INF/jsp/tax/role/listUI.jsp</result>
+            <result name="{1}">/WEB-INF/jsp/tax/role/{1}.jsp</result>
         </action>
 
         <action name="test_*" class="testAction" method="execute">

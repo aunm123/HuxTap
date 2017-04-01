@@ -15,6 +15,7 @@ public class Role implements Serializable {
     private Integer roleId;
     private String name;
     private String state;
+    @OneToMany(cascade=CascadeType.ALL)
     private Set<RolePrivilege> rolePrivileges;
 
     public Role(Integer roleId, String name, String state, Set<RolePrivilege> rolePrivileges) {

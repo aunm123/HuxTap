@@ -9,7 +9,6 @@ import javac.service.RoleService;
 import org.springframework.stereotype.Controller;
 
 import javax.annotation.Resource;
-import javax.xml.ws.Action;
 import java.util.HashSet;
 import java.util.List;
 
@@ -38,7 +37,7 @@ public class RoleAction extends BaseAction {
             if (privilegeIds!=null){
                 HashSet<RolePrivilege> set = new HashSet<RolePrivilege>();
                 for (int i = 0;i<privilegeIds.length;i++){
-                    set.add(new RolePrivilege(new RolePrivilegeId(role,privilegeIds[i]));
+                    set.add(new RolePrivilege(new RolePrivilegeId(role,privilegeIds[i])));
                 }
                 role.setRolePrivileges(set);
             }
