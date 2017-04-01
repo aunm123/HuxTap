@@ -34,13 +34,7 @@ public class RoleAction extends BaseAction {
     }
     public String add(){
         if (role!=null){
-            if (privilegeIds!=null){
-                HashSet<RolePrivilege> set = new HashSet<RolePrivilege>();
-                for (int i = 0;i<privilegeIds.length;i++){
-                    set.add(new RolePrivilege(new RolePrivilegeId(role,privilegeIds[i])));
-                }
-                role.setRolePrivileges(set);
-            }
+            roleSet();
             roleService.save(role);
         }
         return "list";
@@ -60,6 +54,12 @@ public class RoleAction extends BaseAction {
         return "editUI";
     }
     public String edit(){
+        roleSet();
+        roleService.update(role);
+        return "list";
+    }
+
+    private void roleSet() {
         if (privilegeIds!=null){
             HashSet<RolePrivilege> set = new HashSet<RolePrivilege>();
             for (int i=0;i<privilegeIds.length;i++){
@@ -67,9 +67,8 @@ public class RoleAction extends BaseAction {
             }
             role.setRolePrivileges(set);
         }
-        roleService.update(role);
-        return "list";
     }
+
     public String delete(){
         if (role!=null&&role.getRoleId()!=null){
             roleService.delete(role.getRoleId());
