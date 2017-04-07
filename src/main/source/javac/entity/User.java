@@ -2,6 +2,7 @@ package javac.entity;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 /**
  * Created by timhuo on 2017/3/29.
@@ -26,6 +27,8 @@ public class User {
     private String memo;
     private Date birthday;
     private String state;
+    @ManyToMany(targetEntity = Role.class)
+    private Set<Role> roles;
 
     //用户状态
     public final static String USER_STATE_VALID = "1";//有效
@@ -143,5 +146,13 @@ public class User {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

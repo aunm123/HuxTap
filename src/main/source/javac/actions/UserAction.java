@@ -1,8 +1,10 @@
 package javac.actions;
 
+import com.opensymphony.xwork2.ActionContext;
 import javac.entity.User;
 import javac.exception.ActionException;
 import javac.exception.SysException;
+import javac.service.RoleService;
 import javac.service.UserService;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,11 +27,15 @@ public class UserAction extends BaseAction {
 
     @Resource
     private UserService userService;
+    @Resource
+    private RoleService roleService;
+
     private List<User> userList;
     private User user;
     private File headImg;
     private String headImgContentType;
     private String headImgFileName;
+    private String[] userRoleIds;
 
     //列表页面
     public String listUI() throws SysException{
@@ -43,6 +49,7 @@ public class UserAction extends BaseAction {
 
     //跳转到新增页面
     public String addUI(){
+        ActionContext.getContext().getContextMap().put("roleList", roleService.findObjects());
         return "addUI";
     }
     //保存新增
@@ -54,12 +61,14 @@ public class UserAction extends BaseAction {
                 FileUtils.copyFile(headImg,new File(filePath,fileName));
                 user.setHeadImg("user/"+fileName);
             }
-            userService.save(user);
+            userService.saveUserAndRole(user,userRoleIds);
         }
         return listUI();
     }
     //跳转到编辑界面
     public String editUI(){
+        ActionContext.getContext().getContextMap().put("roleList", roleService.findObjects());
+
         if (user!=null && user.getId()!=null){
             user=userService.findObjectById(user.getId());
         }
@@ -68,6 +77,8 @@ public class UserAction extends BaseAction {
     //保存编辑
     public String edit() throws IOException,SysException {
         if (user!=null){
+            ActionContext.getContext().getContextMap().put("roleList", roleService.findObjects());
+
             if (headImg!=null){
                 String filePath=ServletActionContext.getServletContext().getRealPath("upload/user");
                 String fileName = UUID.randomUUID().toString()+headImgFileName.substring((headImgFileName.lastIndexOf(".")));
@@ -79,7 +90,7 @@ public class UserAction extends BaseAction {
                 }
                 user.setHeadImg("user/"+fileName);
             }
-            userService.update(user);
+            userService.updateUserAndRole(user,userRoleIds);
         }
         return listUI();
     }

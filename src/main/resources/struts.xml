@@ -28,6 +28,7 @@
             <exception-mapping exception="java.lang.Exception" result="input" />
         </global-exception-mappings>
     </package>
+
     <package name="user-action" namespace="/" extends="base-default">
         <global-allowed-methods>regex:.*</global-allowed-methods>
 

@@ -9,7 +9,7 @@ import java.io.Serializable;
  */
 @Embeddable
 public class RolePrivilegeId implements Serializable {
-    @ManyToOne
+    @ManyToOne(targetEntity = Role.class)
     private Role role;
     private String code;
 

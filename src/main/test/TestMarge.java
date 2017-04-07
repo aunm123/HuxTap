@@ -8,6 +8,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
+import java.lang.reflect.Method;
+
 /**
  * Created by timhuo on 2017/3/29.
  */
@@ -22,7 +24,7 @@ public class TestMarge {
 
     @Test
     public void testMarge(){
-        UserService ser = (UserService) ctx.getBean("testService");
+        UserService ser = (UserService) ctx.getBean("userService");
     }
 
 
@@ -41,6 +43,15 @@ public class TestMarge {
         session.save(p1);
         transaction.commit();
         session.close();
+    }
+
+    @Test
+    public void testClassMethor(){
+        SessionFactory sessionFactory = (SessionFactory) ctx.getBean("sessionFactory");
+        Method[] methods = SessionFactory.class.getMethods();
+        for (Method method : methods){
+            System.out.println(method.getName());
+        }
     }
 
     @Test

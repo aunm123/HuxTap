@@ -15,8 +15,10 @@ public class Role implements Serializable {
     private Integer roleId;
     private String name;
     private String state;
-    @OneToMany(cascade=CascadeType.ALL)
+    @OneToMany(cascade=CascadeType.ALL,fetch = FetchType.EAGER,targetEntity = RolePrivilege.class)
     private Set<RolePrivilege> rolePrivileges;
+    @ManyToMany(targetEntity = User.class)
+    private Set<User> users;
 
     public Role(Integer roleId, String name, String state, Set<RolePrivilege> rolePrivileges) {
         this.roleId = roleId;
@@ -59,4 +61,5 @@ public class Role implements Serializable {
     public void setRolePrivileges(Set<RolePrivilege> rolePrivileges) {
         this.rolePrivileges = rolePrivileges;
     }
+
 }

@@ -10,7 +10,9 @@ import java.util.List;
  */
 public interface UserService {
     public void save(User user);
+    public void saveUserAndRole(User user, String[] userRoleIds);
     public void update(User user);
+    public void updateUserAndRole(User user, String[] userRoleIds);
     public void delete(Serializable id);
     public User findObjectById(Serializable id);
     public User findObjectByAccound(String account);

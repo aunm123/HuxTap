@@ -1,12 +1,15 @@
 package javac.service.impl;
 
+import javac.dao.RoleDao;
 import javac.dao.UserDao;
+import javac.entity.Role;
 import javac.entity.User;
 import javac.service.UserService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
 
 /**
@@ -17,12 +20,38 @@ public class UserServiceImpl implements UserService {
 
     @Resource
     private UserDao userDao;
+    @Resource
+    private RoleDao roleDao;
 
     public void save(User user) {
         userDao.save(user);
     }
 
+    public void saveUserAndRole(User user, String[] userRoleIds) {
+        HashSet<Role> roleHashSet = new HashSet<Role>();
+        for (int i=0;i<userRoleIds.length;i++){
+            Role tempRole = roleDao.findObjectById(userRoleIds[i]);
+            if (tempRole!=null){
+                roleHashSet.add(tempRole);
+            }
+        }
+        user.setRoles(roleHashSet);
+        userDao.save(user);
+    }
+
     public void update(User user) {
+        userDao.update(user);
+    }
+
+    public void updateUserAndRole(User user, String[] userRoleIds) {
+        HashSet<Role> roleHashSet = new HashSet<Role>();
+        for (int i=0;i<userRoleIds.length;i++){
+            Role tempRole = roleDao.findObjectById(userRoleIds[i]);
+            if (tempRole!=null){
+                roleHashSet.add(tempRole);
+            }
+        }
+        user.setRoles(roleHashSet);
         userDao.update(user);
     }
 
